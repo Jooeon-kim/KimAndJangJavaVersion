@@ -89,3 +89,29 @@ class Drink {
         this.amount++;
     }
 }
+class vip{
+    ArrayList<vip> vips = new ArrayList<>();
+    String name;
+    String phone;
+    int point =1000;
+    vip(String name,String phone){
+        this.name = name;
+        this.phone = phone;
+    }
+    vip(){
+        this.vips.add(new vip("김주언","01099605629"));
+        this.vips.add(new vip("장희용","01011112222"));
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public int getPoint() {
+        return point;
+    }
+}

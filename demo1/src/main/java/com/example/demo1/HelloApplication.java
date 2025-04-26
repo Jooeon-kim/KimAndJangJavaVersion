@@ -20,6 +20,7 @@ public class HelloApplication extends Application {
     Label total2 = new Label("총 결제금액: 0원");
     Scene scene2;
     VBox cartVList = new VBox();
+    vip vip = new vip();
     @Override
     public void start(Stage stage) throws Exception {
         cartList = new VBox();
@@ -144,7 +145,7 @@ public class HelloApplication extends Application {
 
         Scene scene2 = new Scene(vBoxScene2);
         this.scene2 = scene2;
-
+        
 
         stage.setScene(scene);
         stage.show();
