@@ -5,10 +5,12 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -20,7 +22,8 @@ public class HelloApplication extends Application {
     Label total2 = new Label("총 결제금액: 0원");
     Scene scene2;
     VBox cartVList = new VBox();
-    vip vip = new vip();
+    Vip vip = new Vip();
+    Vip currentVip;
     @Override
     public void start(Stage stage) throws Exception {
         cartList = new VBox();
@@ -145,7 +148,51 @@ public class HelloApplication extends Application {
 
         Scene scene2 = new Scene(vBoxScene2);
         this.scene2 = scene2;
-        
+
+
+
+        btVip.setOnMouseClicked(e -> {
+            Stage smallStage = new Stage();
+            smallStage.initModality(Modality.WINDOW_MODAL);  // 이걸 설정하면 메인 창과 연결돼
+            smallStage.initOwner(stage);
+
+            VBox small = new VBox(20);
+            VBox vipBox = new VBox(20);
+            VBox vipSet = new VBox(20);
+
+            Label inputVipPhone = new Label("회원 핸드폰 번호를 입력하세요");
+
+            TextField textFieldPhone = new TextField();
+            textFieldPhone.setOnAction(a->{
+                if(!this.vip.searchVipPhone(textFieldPhone.getText())){
+                    vipSet.getChildren().clear();
+                    Label sayNo = new Label("일치하는 회원정보가 없습니다");
+                    vipSet.getChildren().add(sayNo);
+                }
+                else{
+                    vipSet.getChildren().clear();
+                    this.currentVip = this.vip.setVip(textFieldPhone.getText());
+                    Label welcomeVip = new Label(this.currentVip.name+"님 반갑습니다");
+                    Label vipPoint = new Label("현재 남은 포인트: "+currentVip.point);
+                    Button use = new Button("사용하기");
+                    Button save = new Button("적립하기");
+                    vipSet.getChildren().addAll(welcomeVip,vipPoint,use,save);
+                }
+            });
+
+            vipBox.getChildren().addAll(inputVipPhone,textFieldPhone);
+
+            small.getChildren().addAll(vipBox,vipSet);
+
+            Scene smallScene = new Scene(small, 400, 300);
+
+
+            smallStage.setScene(smallScene);
+            smallStage.setTitle("작은 창");
+            smallStage.show();
+        });
+
+
 
         stage.setScene(scene);
         stage.show();
@@ -210,5 +257,8 @@ public class HelloApplication extends Application {
             vBox.getChildren().addAll(imageView, name);
             coffeeMenu.getChildren().add(vBox);
         }
+    }
+    public static void main(String[] args) {
+        launch();
     }
 }
